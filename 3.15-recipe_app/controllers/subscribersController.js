@@ -3,19 +3,20 @@
 const mongoose = require('mongoose'),
     Subscriber = require('../models/subscriber');
 
-exports.getAllSubscribers = async (req, res, next) => {
+exports.getAllSubscribers = async (req, res) => {
     try {
-        req.data = await Subscriber.find({});
-        next();
-    } catch (e) {
-        next(e);
+      const subscribers = await Subscriber.find({}).exec();
+      res.render("subscribers", {
+        subscribers: subscribers
+      });
+      console.log("promise complete");
+    } catch (error) {
+      console.log(error.message);
+      res.render("subscribers", {
+        subscribers: []
+      });
     }
-}
-
-exports.getSubscriptionPage = async (req, res, next) => {
-    console.log(req.data);
-    res.render('subscribers', { subscribers: req.data });
-};
+  };
 
 exports.saveSubscriber = async (req, res) => {
     const newSubscriber = new Subscriber({

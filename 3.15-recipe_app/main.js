@@ -16,6 +16,7 @@ app.use(express.json());
 
 // connect to database
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise
 mongoose.connect(
     'mongodb://localhost:27017/recipe_db',
     { useNewUrlParser: true }
@@ -29,8 +30,7 @@ db.once("open", () => {
 const subscribersController = require('./controllers/subscribersController');
 app.get(
     '/subscribers',
-    subscribersController.getAllSubscribers,
-    subscribersController.getSubscriptionPage
+    subscribersController.getAllSubscribers
 );
 
 // handle contact GET request

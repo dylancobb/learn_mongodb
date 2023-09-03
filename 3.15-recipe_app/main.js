@@ -1,11 +1,20 @@
 'use strict';
 
+// set up server
 const express = require('express'),
     app = express();
-
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
 
+// body-parser
+app.use(
+    express.urlencoded({
+        extended: false
+    })
+);
+app.use(express.json());
+
+// connect to database
 const mongoose = require('mongoose');
 mongoose.connect(
     'mongodb://localhost:27017/recipe_db',
@@ -16,15 +25,22 @@ db.once("open", () => {
     console.log('Successfully connected to MongoDB using Mongoose!');
 });
 
-const Subscriber = require('./models/subscriber');
+// handle subscribers GET request
 const subscribersController = require('./controllers/subscribersController');
+app.get(
+    '/subscribers',
+    subscribersController.getAllSubscribers,
+    subscribersController.getSubscriptionPage
+);
 
-app.get('/subscribers', subscribersController.getAllSubscribers,
-    (req, res, next) => {
-        console.log(req.data);
-        res.render('subscribers', { subscribers: req.data });
-    });
+// handle contact GET request
+app.get('/contact', (req, res, next) => {
+    res.render('contact');
+});
+
+// handle form submission (action is to '/subscribe')
+app.post('/subscribe', subscribersController.saveSubscriber);
 
 app.listen(app.get('port'), () => {
-    console.log(`Server running on http://localhost:${ app.get('port') }`);
+    console.log(`Server running on http://localhost:${app.get('port')}`);
 });

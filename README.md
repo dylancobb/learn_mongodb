@@ -18,4 +18,9 @@ This repo is just to keep track as I work through unit 3 of [Get Programming Wit
 
 ### Lesson 15
 
-- [In Progress]
+- Learned to handle database queries and use POST requests to write to the database.
+- Dynamically displaying results from databsae queries on a webpage.
+
+### Lesson 16
+
+- Bring everything learned in this module together to enhance the Express server capstone project with database interactivity.
